@@ -1,7 +1,10 @@
 {
     "AppName": "gedit",
-    "LogDetail": "detail log",
-    "RestartCommand": "/usr/bin/gedit /etc/group",
-    "RestartEnv": ["PATH=/usr/bin","PWD=/etc"],
-    "RestartDirectory": "/etc"
+    "RestartCommand": ["/usr/bin/gedit", "/etc/group"],
+    "RestartEnv": {
+        "PATH": "/usr/bin",
+        "PWD": "/etc"
+    },
+    "RestartDirectory": "/etc",
+    "LogDetail": "detail log"
 }

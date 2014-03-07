@@ -24,6 +24,7 @@ import os
 import sys
 import getopt
 import json
+import subprocess
 # from PyQt5.QtCore import QApplication
 from PyQt5.QtWidgets import QApplication, QMessageBox, QPushButton
 
@@ -38,6 +39,7 @@ def show_usage():
     print("deepin-crash-reporter <-h|--help> <-c|--config> jsonfile")
 
 def parse_config(config_file):
+    config = None
     try:
         with open(config_file, "r") as f:
             config = json.load(f)
@@ -50,7 +52,12 @@ def parse_config(config_file):
 def on_click_restart():
     global config
     print("restart: %s" % config[ITEM_RESTART_COMMAND] )
-
+    try:
+        subprocess.Popen(config[ITEM_RESTART_COMMAND], cwd=config[ITEM_RESTART_DIRECTORY],
+                         env=config[ITEM_RESTART_ENV])
+    except:
+        print("Unexpected error:", sys.exc_info()[0])
+        
 # TODO
 def on_click_report():
     global config
@@ -76,6 +83,9 @@ def main():
     
     global config
     config = parse_config(config_file)
+    if config == None:
+        show_usage()
+        sys.exit(1)
             
     # show message dialog
     dialog = QMessageBox(QMessageBox.Critical, "Deepin Crash Reporter", 'We are sorry, application "%s" was crashed, you can restart it or give a report to us.' % config[ITEM_APP_NAME] )
