@@ -37,7 +37,7 @@ ITEM_RESTART_DIRECTORY = "RestartDirectory"
 
 def show_usage():
     print("arguments: %s" % sys.argv)
-    print("deepin-crash-reporter <-h|--help> <-c|--config> jsonfile")
+    print("deepin-crash-reporter [-h|--help] [-r|--remove-config] <-c|--config> jsonfile")
 
 def parse_config(config_file):
     config = None
@@ -67,8 +67,9 @@ def on_click_report():
 def main():
     # dispatch arguments
     config_file = ""
+    remove_config = False
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "hc:", ["help=", "config="])
+        opts, args = getopt.getopt(sys.argv[1:], "hrc:", ["help", "remove-config", "config="])
     except getopt.GetoptError:
         show_usage()
         sys.exit(2)
@@ -79,6 +80,8 @@ def main():
         if opt in ("-h", "--help"):
             show_usage()
             sys.exit()
+        elif opt in ("-r", "--remove-config"):
+            remove_config = True
         elif opt in ("-c", "--config"):
             config_file = arg
     
@@ -87,7 +90,10 @@ def main():
     if config == None:
         show_usage()
         sys.exit(1)
-            
+    
+    if remove_config:
+        os.remove(config_file)
+        
     # show message dialog
     dialog = QMessageBox(QMessageBox.Critical, "Deepin Crash Reporter", 'We are sorry, application "%s" was crashed, you can restart it or give a report to us.' % config[ITEM_APP_NAME] )
     detail = "Restart command: {0}\nEnvironment variables: {1} \nWorking directory: {2}\nLog detail:\n{3}".format(
