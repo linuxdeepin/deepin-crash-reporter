@@ -22,8 +22,12 @@
 
 import os
 import sys
+import getopt
 # from PyQt5.QtCore import QApplication
 from PyQt5.QtWidgets import QApplication, QMessageBox, QPushButton
+
+def showUsage():
+    print("deepin-crash-reporter <-h|--help> <-l|--logid> logid")
 
 def onClickRestart():
     print("restart")
@@ -33,13 +37,29 @@ def onClickReport():
     print("report")
 
 def main():
+    # dispatch arguments
+    logid = ''
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], "hl:", ["help=", "logid="])
+    except getopt.GetoptError:
+        showUsage()
+        sys.exit(2)
+    for opt, arg in opts:
+        if opt in ("-h", "--help"):
+            showUsage()
+            sys.exit()
+        elif opt in ("-l", "--logid"):
+            logid = arg
+    
+    app = QApplication(sys.argv)
+    
+    # change to real path
     root_dir = os.path.dirname(os.path.realpath(__file__))
     os.chdir(root_dir)
-
-    app = QApplication(sys.argv)
-    # QMessageBox.information(None, "Success!",
-                            # "Hello \"%s\"!")
-    # QMessageBox.
+    
+    # TODO get detail log
+    
+    # show message dialog
     dialog = QMessageBox(QMessageBox.Critical, "Deepin Crash Reporter", "hhh")
     dialog.setDetailedText("hahahaha")
     
@@ -53,20 +73,6 @@ def main():
     dialog.addButton(report, QMessageBox.YesRole)
     dialog.addButton("Close", QMessageBox.NoRole)
     print(dialog.exec_())
-    # print(dialog.show())
-    
-    
-    # QMessageBox msgBox(QMessageBox::Warning, tr("QMessageBox::warning()"),
-    #                    MESSAGE, 0, this);
-    # msgBox.setDetailedText(MESSAGE_DETAILS);
-    # msgBox.addButton(tr("Save &Again"), QMessageBox::AcceptRole);
-    # msgBox.addButton(tr("&Continue"), QMessageBox::RejectRole);
-    # if (msgBox.exec() == QMessageBox::AcceptRole)
-    #     warningLabel->setText(tr("Save Again"));
-    # else
-    #     warningLabel->setText(tr("Continue"));
-
-    # sys.exit(app.exec_())
     
 if __name__ == '__main__':
     main()
