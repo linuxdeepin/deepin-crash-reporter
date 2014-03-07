@@ -28,8 +28,7 @@ import json
 from PyQt5.QtWidgets import QApplication, QMessageBox, QPushButton
 
 config = None
-ITEM_LOG_ID = "LogID"
-ITEM_LOG_NAME = "LogName"
+ITEM_APP_NAME = "AppName"
 ITEM_LOG_DETAIL = "LogDetail"
 ITEM_RESTART_COMMAND = "RestartCommand"
 ITEM_RESTART_ENV = "RestartEnv"
@@ -55,7 +54,7 @@ def on_click_restart():
 # TODO
 def on_click_report():
     global config
-    print("report: %s" % config[ITEM_LOG_DETAIL] )
+    print("report: %s" % config[ITEM_APP_NAME] )
 
 def main():
     # dispatch arguments
@@ -79,7 +78,7 @@ def main():
     config = parse_config(config_file)
             
     # show message dialog
-    dialog = QMessageBox(QMessageBox.Critical, "Deepin Crash Reporter", 'We are sorry, application "%s" was crashed, you can restart it or give a report to us.' % config[ITEM_LOG_NAME] )
+    dialog = QMessageBox(QMessageBox.Critical, "Deepin Crash Reporter", 'We are sorry, application "%s" was crashed, you can restart it or give a report to us.' % config[ITEM_APP_NAME] )
     detail = "Restart command: {0}\nEnvironment variables: {1} \nWorking directory: {2}\nLog detail:\n{3}".format(
         config[ITEM_RESTART_COMMAND], config[ITEM_RESTART_ENV], config[ITEM_RESTART_DIRECTORY], config[ITEM_LOG_DETAIL])
     dialog.setDetailedText(detail)
@@ -92,7 +91,7 @@ def main():
     dialog.addButton(restart, QMessageBox.ResetRole)
     dialog.addButton(report, QMessageBox.YesRole)
     dialog.addButton("Close", QMessageBox.NoRole)
-    print(dialog.exec_())
+    dialog.exec_()
     
 if __name__ == '__main__':
     app = QApplication(sys.argv)
