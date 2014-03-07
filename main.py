@@ -36,6 +36,7 @@ ITEM_RESTART_ENV = "RestartEnv"
 ITEM_RESTART_DIRECTORY = "RestartDirectory"
 
 def show_usage():
+    print("arguments: %s" % sys.argv)
     print("deepin-crash-reporter <-h|--help> <-c|--config> jsonfile")
 
 def parse_config(config_file):
