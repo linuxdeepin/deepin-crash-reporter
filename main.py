@@ -96,7 +96,7 @@ def main():
         
     # show message dialog
     dialog = QMessageBox(QMessageBox.Critical, "Deepin Crash Reporter", 'We are sorry, application "%s" was crashed, you can restart it or give a report to us.' % config[ITEM_APP_NAME] )
-    detail = "Restart command: {0}\nEnvironment variables: {1} \nWorking directory: {2}\nLog detail:\n{3}".format(
+    detail = "Restart command: {0}\n\nEnvironment variables: {1} \n\nWorking directory: {2}\n\nLog detail:\n{3}".format(
         config[ITEM_RESTART_COMMAND], config[ITEM_RESTART_ENV], config[ITEM_RESTART_DIRECTORY], config[ITEM_LOG_DETAIL])
     dialog.setDetailedText(detail)
     
